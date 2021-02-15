@@ -23,8 +23,6 @@
   },
   "dependencies": {
     "@postlight/mercury-parser": "^2.2.0",
-    "@types/postlight__mercury-parser": "^2.2.3",
-    "gulp-typescript": "^6.0.0-alpha.1",
-    "tsify": "^5.0.2"
+    "@types/postlight__mercury-parser": "^2.2.3"
   }
 }
