@@ -1,0 +1,26 @@
+{
+
+  "manifest_version": 2,
+  "name": "Obsidian Clipper",
+  "version": "1.0",
+
+  "description": "",
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "48": "icons/border-48.png"
+    },
+    "default_title": "Clip to Obsidian",
+    "default_popup": "popup.html"
+  },
+	"options_ui": {
+		"page": "options.html",
+		"browser_style": true
+	}
+}

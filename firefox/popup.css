@@ -1,0 +1,39 @@
+#popup-content {
+	background-color: rgb(22, 22, 22);
+	display: inline-block;
+}
+h1 {
+	padding: 0 6px;
+	color: rgb(220, 221, 222);
+}
+.menu-container {
+/*	display: flex; */
+	text-align: center;
+}
+.menu {
+	padding: 8px 0;
+	position: relative;
+	display: inline-block;
+}
+.menu-item button {
+	cursor: default;
+	border-radius: 5px;
+	border: 1px solid rgb(153, 153, 153);
+	background-color: rgb(153, 153, 153); /** gray **/
+	font-size: 1rem;
+	width: auto;
+	padding: 6px;
+	display: flex;
+	position: relative;
+	text-align: left;
+	align-items: center;
+	justify-content: flex-start;
+	color: rgb(220, 221, 222);
+	margin: 10px 10px;
+}
+li.active button {
+	background-color: rgb(72, 54, 153);
+	border: 1px solid rgb(72, 54, 153);
+	cursor: pointer;
+}
+
