@@ -1,0 +1,9 @@
+body {
+	background-color: rgb(32, 32, 32);
+	/* color: rgb(220, 221, 222); */
+	color: rgb(168, 156, 246);
+	min-height: 300px;
+}
+#options-content {
+	border-color: rgb(220, 221, 222);
+}

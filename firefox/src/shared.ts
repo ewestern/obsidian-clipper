@@ -42,6 +42,23 @@ interface SendClipMessage extends Message{
 	value: Clipping
 }
 
+interface Options {
+	vaultName: string;
+}
+
+const defaultOptions: Options = {
+	"vaultName": "Web"
+}
+
+async function retrieveOptions(): Promise<Options> {
+	return browser.storage.local.get(Object.keys(defaultOptions)).then((obj: browser.storage.StorageObject) => {
+		return {
+			...defaultOptions,
+			...obj
+		}
+	})
+}
+
 export {
 	  ClipOption
 	, Message
@@ -56,6 +73,9 @@ export {
 	, OPTION_CLIP_PAGE
 	, OPTION_CLIP_SELECTION
 	, OPTION_CLIP_LINK
+	, Options
+	, defaultOptions
+	, retrieveOptions
 }
 
 

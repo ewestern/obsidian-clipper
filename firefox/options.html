@@ -3,16 +3,26 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="choose_beast.css"/>
+    <link rel="stylesheet" href="options.css"/>
   </head>
 
 <body>
   <div id="options-content">
-    Obsidian Clipper
+		<h1>
+			Obsidian Clipper
+		</h1>
+		<div class="options-container">
+			<div id="vault-field">
+				<label for="vault-name">Vault Name:</label>
+
+				<input type="text" id="vault-name" name="vault-name" required>
+				</div>
+		</div>
   </div>
+
   <div id="error-content" class="hidden">
   </div>
-  <script src="dist/options.js"></script>
+  <script src="/dist/options.js"></script>
 </body>
 
 </html>

@@ -10,6 +10,7 @@ import {
 	, Clipping
 	, MESSAGE_SEND_CLIP
 	, SendClipMessage
+	, retrieveOptions
 } from "./shared";
 
 function activateOptions(opts: ClipOption[]): void {
@@ -32,8 +33,10 @@ function activateOptions(opts: ClipOption[]): void {
 
 function listenForClicks(sender: browser.runtime.MessageSender): void {
 	document.querySelectorAll("li").forEach((node) => {
-		node.addEventListener("click", (_: Event) => {
-			switch (node.id) {
+		let nodeId = node.id
+		function listener(event: Event) {
+			let e = event as MouseEvent
+			switch (nodeId) {
 				case "clip-link":
 					makeSelection(sender.tab!.id!, OPTION_CLIP_LINK);
 					break
@@ -44,7 +47,9 @@ function listenForClicks(sender: browser.runtime.MessageSender): void {
 					makeSelection(sender.tab!.id!, OPTION_CLIP_PAGE);
 					break
 			}
-		});
+			e.target?.removeEventListener("click", listener);
+		}
+		node.addEventListener("click", listener);
 	})
 }
 
@@ -54,13 +59,15 @@ function makeSelection(id: number, opt: ClipOption) {
 		value: opt
 	})
 }
+
 async function openObsidian(clip: Clipping) {
-	let vaultName = "Notes";
+	let options = await retrieveOptions();
 	let modifiedTitle = clip.title
 		.split(":").join("")
 		.split("/").join("");
-	let uri = `obsidian://new?vault=${vaultName}&name=${modifiedTitle}&content=${clip.content}`;
+	let uri = `obsidian://new?vault=${options.vaultName}&name=${modifiedTitle}&content=${clip.content}`;
 	browser.tabs.create({url: encodeURI(uri), active: true}).then((tab: browser.tabs.Tab) => {
+		// TODO: maybe close tab??
 		console.log(tab)
 	});
 }
@@ -68,29 +75,17 @@ async function openObsidian(clip: Clipping) {
 
 
 function listenForMessages(obj: object, sender: browser.runtime.MessageSender): void {
-		let message = obj as Message
-		switch (message.messageType) {
-			case MESSAGE_GET_OPTIONS:
-				activateOptions((message as GetOptionsMessage).value)
-				listenForClicks(sender);
-				break
-			case MESSAGE_SEND_CLIP:
-				openObsidian((message as SendClipMessage).value);
-				break;
-		}
-}
-
-if (window.browser) {
-	// TODO: make sure this is right
-	if (!browser.runtime.onMessage.hasListener(listenForMessages)) {
-		browser.runtime.onMessage.addListener(listenForMessages);
+	let message = obj as Message
+	switch (message.messageType) {
+		case MESSAGE_GET_OPTIONS:
+			activateOptions((message as GetOptionsMessage).value)
+			listenForClicks(sender);
+			break
+		case MESSAGE_SEND_CLIP:
+			openObsidian((message as SendClipMessage).value);
+			break;
 	}
-
-	browser.tabs.executeScript(undefined, {file: "/dist/content.js"}).then((obj: object[]) => {
-		console.log("AFTER EX")
-		console.log(obj)
-	});
 }
-	//  .then(listenForClicks)
-//  .catch(reportExecuteScriptError);
-//
+
+browser.runtime.onMessage.addListener(listenForMessages);
+browser.tabs.executeScript(undefined, {file: "/dist/content.js"});

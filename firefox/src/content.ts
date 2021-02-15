@@ -1,6 +1,6 @@
 import Mercury from '@postlight/mercury-parser';
 import {
-	ClipOption
+		ClipOption
 	, Clipping
 	, Message
 	, MESSAGE_GET_OPTIONS
@@ -11,6 +11,7 @@ import {
 	, OPTION_CLIP_SELECTION
 	, SelectOptionMessage
 } from './shared';
+
 
 function getSelectionText(): string {
 	return window.getSelection()!.toString();
@@ -60,6 +61,7 @@ async function getClipping(option: ClipOption): Promise<Clipping> {
 
 
 function messageListener(obj: object) {
+
 	let message = obj as Message;
 	switch (message.messageType) {
 		case MESSAGE_SELECT_OPTION:
@@ -69,14 +71,17 @@ function messageListener(obj: object) {
 	}
 }
 
-function sendClip(clip: Clipping) {
+async function sendClip(clip: Clipping) {
 	return browser.runtime.sendMessage({
 		messageType: MESSAGE_SEND_CLIP,
 		value: clip
+	}).then((_) => {
+		browser.runtime.onMessage.removeListener(messageListener)
 	});
 }
 
 browser.runtime.onMessage.addListener(messageListener)
+
 browser.runtime.sendMessage({
 	messageType: MESSAGE_GET_OPTIONS,
 	value: getOptions()

@@ -7,7 +7,8 @@
   "description": "",
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "icons": {
     "48": "icons/border-48.png"
@@ -21,6 +22,7 @@
   },
 	"options_ui": {
 		"page": "options.html",
-		"browser_style": true
+		"browser_style": true,
+		"chrome_style": true
 	}
 }
