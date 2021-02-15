@@ -1,5 +1,16 @@
 import Mercury from '@postlight/mercury-parser';
-import {ClipOption, Clipping, Message, MESSAGE_GET_OPTIONS, MESSAGE_SELECT_OPTION, MESSAGE_SEND_CLIP, OPTION_CLIP_LINK, OPTION_CLIP_PAGE, OPTION_CLIP_SELECTION, SelectOptionMessage} from './shared';
+import {
+	ClipOption
+	, Clipping
+	, Message
+	, MESSAGE_GET_OPTIONS
+	, MESSAGE_SELECT_OPTION
+	, MESSAGE_SEND_CLIP
+	, OPTION_CLIP_LINK
+	, OPTION_CLIP_PAGE
+	, OPTION_CLIP_SELECTION
+	, SelectOptionMessage
+} from './shared';
 
 function getSelectionText(): string {
 	return window.getSelection()!.toString();
@@ -9,12 +20,6 @@ function getLinkContent(url: string): string {
 	return `Link:\n${url}`
 }
 
-/**
- * * action =>  runContentScript
- * * content => sendOptions to action
- *	action => send selected option to content
- *	content =>  call getClippoing with option
- * **/
 
 function getOptions(): ClipOption[] {
 	switch (document.contentType) {
