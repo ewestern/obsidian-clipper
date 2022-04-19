@@ -73,15 +73,18 @@ async function openObsidian(clip: Clipping) {
 	} else {
 		folder = "";
 	}
+  let encodedFolder = encodeURI(folder);
+  let encodedTitle = encodeURI(modifiedTitle);
+	let encodedVault = encodeURI(options.vaultName);
+	let encodedContent = encodeURIComponent(clip.content);
+  
+	let uri = `obsidian://new?vault=${encodedVault}&name=${encodedFolder}${encodedTitle}&content=${encodedContent}`;
+	browser.tabs.create({url: uri, active: true}).then((tab: browser.tabs.Tab) => {
 
-	let uri = `obsidian://new?vault=${vault}&name=${folder}${modifiedTitle}&content=${clip.content}`;
-	browser.tabs.create({url: encodeURI(uri), active: true}).then((tab: browser.tabs.Tab) => {
 		// TODO: maybe close tab??
 		console.log(tab)
 	});
 }
-
-
 
 function listenForMessages(obj: object, sender: browser.runtime.MessageSender): void {
 	let message = obj as Message
