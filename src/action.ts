@@ -65,11 +65,22 @@ async function openObsidian(clip: Clipping) {
 	let modifiedTitle = clip.title
 		.split(":").join("")
 		.split("/").join("");
-	let encodedTitle = encodeURI(modifiedTitle);
+
+	let [vault, folder] = options.vaultName.split("/")
+
+	if (folder !== undefined) {
+		folder += "/";
+	} else {
+		folder = "";
+	}
+  let encodedFolder = encodeURI(folder);
+  let encodedTitle = encodeURI(modifiedTitle);
 	let encodedVault = encodeURI(options.vaultName);
 	let encodedContent = encodeURIComponent(clip.content);
-	let uri = `obsidian://new?vault=${encodedVault}&name=${encodedTitle}&content=${encodedContent}`;
+  
+	let uri = `obsidian://new?vault=${encodedVault}&name=${encodedFolder}${encodedTitle}&content=${encodedContent}`;
 	browser.tabs.create({url: uri, active: true}).then((tab: browser.tabs.Tab) => {
+
 		// TODO: maybe close tab??
 		console.log(tab)
 	});
