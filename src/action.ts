@@ -82,7 +82,7 @@ async function openObsidian(clip: Clipping) {
 	}
   let encodedFolder = encodeURI(folder);
   let encodedTitle = encodeURI(modifiedTitle);
-	let encodedVault = encodeURI(options.vaultName);
+	let encodedVault = encodeURI(vault);
 	let encodedContent = encodeURIComponent(clip.content);
   
 	let uri = `obsidian://new?vault=${encodedVault}&name=${encodedFolder}${encodedTitle}&content=${encodedContent}`;
