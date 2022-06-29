@@ -3,11 +3,13 @@
 const OPTION_CLIP_LINK = 'OPTION_CLIP_LINK';
 const OPTION_CLIP_SELECTION = 'OPTION_CLIP_SELECTION';
 const OPTION_CLIP_PAGE = 'OPTION_CLIP_PAGE';
+const OPTION_CLIP_TEMPLATE = "OPTION_CLIP_TEMPLATE";
 
-type ClipOption
-	= typeof OPTION_CLIP_LINK
-	| typeof OPTION_CLIP_SELECTION
-	| typeof OPTION_CLIP_PAGE
+type ClipOption =
+  | typeof OPTION_CLIP_LINK
+  | typeof OPTION_CLIP_SELECTION
+  | typeof OPTION_CLIP_PAGE
+  | typeof OPTION_CLIP_TEMPLATE;
 
 
 interface Clipping {
@@ -17,13 +19,14 @@ interface Clipping {
 
 const MESSAGE_GET_OPTIONS = 'MESSAGE_GET_OPTIONS';
 const MESSAGE_SELECT_OPTION = 'MESSAGE_SELECT_OPTION';
-const MESSAGE_SEND_CLIP = 'MESSAGE_SEND_CLIP';
+const MESSAGE_SEND_CLIP = "MESSAGE_SEND_CLIP";
+const MESSAGE_SEND_TEMPLATE = 'MESSAGE_SEND_TEMPLATE';
 
-type MessageType
-	= typeof MESSAGE_GET_OPTIONS
-	| typeof MESSAGE_SELECT_OPTION
-	| typeof MESSAGE_SEND_CLIP
-
+type MessageType =
+  | typeof MESSAGE_GET_OPTIONS
+  | typeof MESSAGE_SELECT_OPTION
+  | typeof MESSAGE_SEND_CLIP
+  | typeof MESSAGE_SEND_TEMPLATE;
 interface Message {
 	messageType: MessageType
 }
@@ -43,12 +46,14 @@ interface SendClipMessage extends Message{
 }
 
 interface Options {
-	vaultName: string;
+  vaultName: string;
+  renderingTemplate: string;
 }
 
 const defaultOptions: Options = {
-	"vaultName": "Web"
-}
+  vaultName: "Web",
+  renderingTemplate: "{{{link}}}\n\n{{selection}}",
+};
 
 async function retrieveOptions(): Promise<Options> {
 	return browser.storage.local.get(Object.keys(defaultOptions)).then((obj: browser.storage.StorageObject) => {
@@ -60,23 +65,24 @@ async function retrieveOptions(): Promise<Options> {
 }
 
 export {
-	  ClipOption
-	, Message
-	, MessageType
-	, MESSAGE_SELECT_OPTION
-	, MESSAGE_GET_OPTIONS
-	, MESSAGE_SEND_CLIP
-	, GetOptionsMessage
-	, SelectOptionMessage
-	, SendClipMessage
-	, Clipping
-	, OPTION_CLIP_PAGE
-	, OPTION_CLIP_SELECTION
-	, OPTION_CLIP_LINK
-	, Options
-	, defaultOptions
-	, retrieveOptions
-}
+  ClipOption,
+  Message,
+  MessageType,
+  MESSAGE_SELECT_OPTION,
+  MESSAGE_GET_OPTIONS,
+  MESSAGE_SEND_CLIP,
+  GetOptionsMessage,
+  SelectOptionMessage,
+  SendClipMessage,
+  Clipping,
+  OPTION_CLIP_PAGE,
+  OPTION_CLIP_SELECTION,
+  OPTION_CLIP_LINK,
+  OPTION_CLIP_TEMPLATE,
+  Options,
+  defaultOptions,
+  retrieveOptions,
+};
 
 
 

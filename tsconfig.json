@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "es2020",
+    "module": "AMD",
     "strict": true,
     "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"],
     "esModuleInterop": true,
