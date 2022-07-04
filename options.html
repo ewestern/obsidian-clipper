@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="options.css"/>
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="options.css" />
+</head>
 
 <body>
   <div id="options-content">
-		<h1>
-			Obsidian Clipper
-		</h1>
-		<div class="options-container">
-			<div id="vault-field">
-				<label for="vault-name">Vault Name:</label>
-
-				<input type="text" id="vault-name" name="vault-name" required>
-				</div>
-		</div>
+    <h1>
+      Obsidian Clipper
+    </h1>
+    <div class="options-container">
+      <div id="vault-field">
+        <label for="vault-name">Vault Name (add folder with "/"):</label>
+        <input type="text" id="vault-name" name="vault-name" required>
+      </div>
+      <div id="vault-field">
+        <label for="rendering-template">Template:</label>
+        <input type="text" id="rendering-template" name="rendering-template">
+      </div>
+    </div>
   </div>
 
   <div id="error-content" class="hidden">

@@ -10,24 +10,28 @@ import {
 	, Clipping
 	, MESSAGE_SEND_CLIP
 	, SendClipMessage
-	, retrieveOptions
+	, retrieveOptions,
+	OPTION_CLIP_TEMPLATE
 } from "./shared";
 
 function activateOptions(opts: ClipOption[]): void {
 	opts.forEach((value: ClipOption) => {
 		switch (value) {
-			case OPTION_CLIP_LINK:
-				document.querySelector("#clip-link")?.classList.add("active")
-				break;
-			case OPTION_CLIP_PAGE:
-				document.querySelector("#clip-page")?.classList.add("active")
-				break;
-			case OPTION_CLIP_SELECTION:
-				document.querySelector("#clip-selection")?.classList.add("active")
-				break;
-			default:
-				break;
-		}
+      case OPTION_CLIP_LINK:
+        document.querySelector("#clip-link")?.classList.add("active");
+        break;
+      case OPTION_CLIP_PAGE:
+        document.querySelector("#clip-page")?.classList.add("active");
+        break;
+      case OPTION_CLIP_SELECTION:
+        document.querySelector("#clip-selection")?.classList.add("active");
+        break;
+      case OPTION_CLIP_TEMPLATE:
+        document.querySelector("#clip-template")?.classList.add("active");
+        break;
+      default:
+        break;
+    }
 	})
 }
 
@@ -37,16 +41,19 @@ function listenForClicks(sender: browser.runtime.MessageSender): void {
 		function listener(event: Event) {
 			let e = event as MouseEvent
 			switch (nodeId) {
-				case "clip-link":
-					makeSelection(sender.tab!.id!, OPTION_CLIP_LINK);
-					break
-				case "clip-selection":
-					makeSelection(sender.tab!.id!, OPTION_CLIP_SELECTION);
-					break
-				case "clip-page":
-					makeSelection(sender.tab!.id!, OPTION_CLIP_PAGE);
-					break
-			}
+        case "clip-link":
+          makeSelection(sender.tab!.id!, OPTION_CLIP_LINK);
+          break;
+        case "clip-selection":
+          makeSelection(sender.tab!.id!, OPTION_CLIP_SELECTION);
+          break;
+        case "clip-page":
+          makeSelection(sender.tab!.id!, OPTION_CLIP_PAGE);
+          break;
+        case "clip-template":
+          makeSelection(sender.tab!.id!, OPTION_CLIP_TEMPLATE);
+          break;
+      }
 			e.target?.removeEventListener("click", listener);
 		}
 		node.addEventListener("click", listener);
@@ -65,13 +72,22 @@ async function openObsidian(clip: Clipping) {
 	let modifiedTitle = clip.title
 		.split(":").join("")
 		.split("/").join("");
-	let encodedTitle = encodeURI(modifiedTitle);
-	let encodedVault = encodeURI(options.vaultName);
+
+	let [vault, folder] = options.vaultName.split("/")
+
+	if (folder !== undefined) {
+		folder += "/";
+	} else {
+		folder = "";
+	}
+  let encodedFolder = encodeURI(folder);
+  let encodedTitle = encodeURI(modifiedTitle);
+	let encodedVault = encodeURI(vault);
 	let encodedContent = encodeURIComponent(clip.content);
-	let uri = `obsidian://new?vault=${encodedVault}&name=${encodedTitle}&content=${encodedContent}`;
+  
+	let uri = `obsidian://new?vault=${encodedVault}&name=${encodedFolder}${encodedTitle}&content=${encodedContent}`;
 	browser.tabs.create({url: uri, active: true}).then((tab: browser.tabs.Tab) => {
-		// TODO: maybe close tab??
-		console.log(tab)
+		browser.tabs.remove(tab.id!);
 	});
 }
 
